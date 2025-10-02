@@ -1,3 +1,4 @@
+import 'package:fitform_ai/App/modules/%20auth/views/signin_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -23,7 +24,11 @@ class OnboardingController extends GetxController {
   }
 
   void getStarted() {
-    // HomeScreen par jao aur pichli saari screens (splash, onboarding) ko memory se hata do
+    Get.offAll(
+          () => SigninScreen(),
+      transition: Transition.rightToLeftWithFade,
+      duration: const Duration(milliseconds: 600),
+    );
   }
 
   @override
