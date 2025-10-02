@@ -1,11 +1,10 @@
 import 'package:fitform_ai/App/modules/Onboarding/static_data/onboarding_data.dart';
-import 'package:fitform_ai/App/modules/Onboarding/widgets/onboarding_page_content.dart';
-import 'package:fitform_ai/App/modules/Onboarding/widgets/wavy_clipper.dart';
+import 'package:fitform_ai/App/modules/Onboarding/views/widgets/onboarding_page_content.dart';
+import 'package:fitform_ai/App/modules/Onboarding/views/widgets/wavy_clipper.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
-import 'onboarding_controller.dart';
-
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import '../controller/onboarding_controller.dart';
 
 class OnboardingScreen extends StatelessWidget {
   OnboardingScreen({super.key});
@@ -19,7 +18,6 @@ class OnboardingScreen extends StatelessWidget {
       body: SafeArea(
         child: Stack(
           children: [
-            // Wavy Background Shape
             Positioned(
               bottom: 0,
               left: 0,
@@ -64,27 +62,18 @@ class OnboardingScreen extends StatelessWidget {
                   ),
                 ),
 
-                Obx( () => Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: List.generate(
-                      onboardingPages.length,
-                          (index) => AnimatedContainer(
-                        duration: const Duration(milliseconds: 300),
-                        margin: const EdgeInsets.symmetric(horizontal: 4),
-                        width: controller.currentPage.value == index ? 24 : 8,
-                        height: 8,
-                        decoration: BoxDecoration(
-                          color: controller.currentPage.value == index
-                              ? const Color(0xFFE8DE00)
-                              : Colors.grey,
-                          borderRadius: BorderRadius.circular(12),
-                        ),
-                      ),
-                    ),
+                SmoothPageIndicator(
+                  controller: controller.pageController,
+                  count: onboardingPages.length,
+                  effect: const WormEffect(
+                    dotColor: Colors.grey,
+                    activeDotColor: Color(0xFFE8DE00),
+                    dotHeight: 8,
+                    dotWidth: 8,
+                    type: WormType.thin,
                   ),
                 ),
                 const SizedBox(height: 30),
-
                 // Bottom Buttons
                 _buildBottomButtons(),
                 const SizedBox(height: 20),
@@ -97,8 +86,20 @@ class OnboardingScreen extends StatelessWidget {
   }
 
   Widget _buildBottomButtons() {
+    final backButtonStyle = ElevatedButton.styleFrom(
+      backgroundColor: Colors.grey.withOpacity(0.2),
+      shape: const CircleBorder(),
+      padding: const EdgeInsets.all(15),
+    );
+
+    final nextButtonStyle = ElevatedButton.styleFrom(
+      backgroundColor: const Color(0xFFE8DE00),
+      foregroundColor: const Color(0xFF1A1A2E),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+    );
     return Obx(
-          () => Padding(
+      () => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 20.0),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -108,35 +109,31 @@ class OnboardingScreen extends StatelessWidget {
               duration: const Duration(milliseconds: 300),
               opacity: controller.currentPage.value > 0 ? 1.0 : 0.0,
               child: ElevatedButton(
-                onPressed: controller.previousPage,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.grey.withOpacity(0.2),
-                  shape: const CircleBorder(),
-                  padding: const EdgeInsets.all(15),
+                onPressed: controller.currentPage.value > 0
+                    ? controller.previousPage
+                    : null,
+                style: backButtonStyle,
+                child: const Text(
+                  'BACK',
+                  style: TextStyle(color: Colors.white),
                 ),
-                child: const Text('BACK', style: TextStyle(color: Colors.white)),
               ),
             ),
 
-            // Next / Get Started Button
             ElevatedButton(
-              onPressed: controller.currentPage.value == onboardingPages.length - 1
+              onPressed:
+                  controller.currentPage.value == onboardingPages.length - 1
                   ? controller.getStarted
                   : controller.nextPage,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: const Color(0xFFE8DE00),
-                foregroundColor: const Color(0xFF1A1A2E),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-                padding:
-                const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-              ),
+              style: nextButtonStyle,
               child: Text(
                 controller.currentPage.value == onboardingPages.length - 1
                     ? 'GET STARTED'
                     : 'NEXT',
-                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                style: const TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
+                ),
               ),
             ),
           ],
