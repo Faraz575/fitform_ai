@@ -30,9 +30,11 @@ dependencies:
   # Local Database
   hive: ^2.2.3
   hive_flutter: ^1.1.0
-  tflite_flutter: ^0.11.0
   image_picker: ^1.2.0
   lottie: ^3.3.1
+  tflite_flutter: ^0.11.0
+  path_provider: ^2.1.5
+
 
 dev_dependencies:
   flutter_test:
@@ -55,6 +57,8 @@ flutter:
   assets:
     - assets/logo/
     - assets/lottie/
+    - assets/deep_learning/gym_pose_model.tflite
+    - assets/deep_learning/labels.txt
 
 # Yeh section alag, file ke end me hona chahiye.
 flutter_native_splash:

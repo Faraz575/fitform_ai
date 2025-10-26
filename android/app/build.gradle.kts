@@ -7,8 +7,8 @@ plugins {
 
 android {
     namespace = "com.Zenith.io.fitform_ai"
-    compileSdk = flutter.compileSdkVersion
-    ndkVersion = flutter.ndkVersion
+    compileSdk = 36
+    ndkVersion = "27.0.12077973"
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
@@ -37,6 +37,15 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+}
+dependencies {
+    // --- YE TINO LINES ZAROORI HAIN ---
+    // Ye TFLite ki base library hai
+    implementation("org.tensorflow:tensorflow-lite:2.9.0")
+    // Ye Flex delegate ke liye hai
+    implementation("org.tensorflow:tensorflow-lite-select-tf-ops:2.9.0")
+    // Ye GPU acceleration ke liye hai (optional lekin behtar hai)
+    implementation("org.tensorflow:tensorflow-lite-gpu:2.9.0")
 }
 
 flutter {

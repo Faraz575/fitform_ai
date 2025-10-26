@@ -127,6 +127,33 @@ class PostureScreen extends StatelessWidget {
               )),
             ),
             const SizedBox(height: 30),
+            // --- NAYA SECTION: Predicted Exercise aur Confidence ---
+            Container(
+              padding: const EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white.withOpacity(0.1),
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Detected Exercise', style: TextStyle(color: Colors.grey)),
+                  const SizedBox(height: 5),
+                  Obx(() => Text(
+                    controller.predictedExercise.value,
+                    style: const TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold),
+                  )),
+                  const SizedBox(height: 10),
+                  const Text('Confidence', style: TextStyle(color: Colors.grey)),
+                  const SizedBox(height: 5),
+                  Obx(() => Text(
+                    "${controller.confidence.value.toStringAsFixed(2)}%",
+                    style: const TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+                  )),
+                ],
+              ),
+            ),
+            const SizedBox(height: 30),
             const Align(
               alignment: Alignment.centerLeft,
               child: Text('Instructions:', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
